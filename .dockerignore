@@ -4,13 +4,13 @@
 
 # Docker
 Dockerfile
+*.dockerfile
 .dockerignore
 
 # Apple
 .DS_Store
 
-
-# Byte-compiled / optimized / DLL files
+# Python Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
