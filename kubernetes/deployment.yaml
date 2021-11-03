@@ -28,10 +28,10 @@ spec:
           resources:
             limits:
               cpu: 200m
-              memory: 100Mi
+              memory: 120Mi
             requests:
               cpu: 20m
-              memory: 24Mi
+              memory: 55Mi
           readinessProbe:
             httpGet:
               path: /
