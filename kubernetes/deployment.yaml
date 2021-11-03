@@ -46,21 +46,3 @@ spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 status: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: flask-gunicorn
-  name: flask-gunicorn
-spec:
-  ports:
-    - name: 8000-8000
-      port: 8000
-      protocol: TCP
-      targetPort: 8000
-  selector:
-    app: flask-gunicorn
-  type: ClusterIP
-status:
-  loadBalancer: {}
