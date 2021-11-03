@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: flask-gunicorn
+  name: flask-gunicorn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-gunicorn
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: flask-gunicorn
+    spec:
+      containers:
+        - image: flask-gunicorn:v1
+          name: flask-gunicorn
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: TEST_ENV
+              value: "test-value"
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+            requests:
+              cpu: 20m
+              memory: 24Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: flask-gunicorn
+  name: flask-gunicorn
+spec:
+  ports:
+    - name: 8000-8000
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app: flask-gunicorn
+  type: ClusterIP
+status:
+  loadBalancer: {}
