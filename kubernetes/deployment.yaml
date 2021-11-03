@@ -24,7 +24,8 @@ spec:
               protocol: TCP
           env:
             - name: GUNICORN_CMD_ARGS
-              value: "--workers=3 --access-logfile -"
+              # value: "--workers=3 --access-logfile=-"
+              value: --reload --workers=2 --access-logfile=- --access-logformat='%(l)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s" %(D)s'
           resources:
             limits:
               cpu: 200m
