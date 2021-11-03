@@ -5,7 +5,7 @@ This Flask 2.0 app has the following features:
 - uses Gunicorn webserver
 - Gunicorn is set to reload at every change to the app.py file
 - has curl, netcat, ps and vi (vim-tiny) commands installed
-- runs as the non root user "app"
+- runs as the non root user "web"
 - uses multistage build
 
 Reference for Flask and Gunicorn ENV variables:
