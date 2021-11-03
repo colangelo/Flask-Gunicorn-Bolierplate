@@ -36,14 +36,15 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 FROM python:3.10-slim-bullseye
 
 # create directory for the app user and create the app user
-RUN mkdir -p /home/app && \
-    addgroup --system app && adduser --system --group app
+ENV USERNAME=web
+RUN mkdir -p /home/${USERNAME} && \
+    addgroup --system ${USERNAME} && adduser --system --group ${USERNAME}
 
 # create the appropriate directories
-ENV HOME=/home/app \
-    APP_HOME=/home/app/web
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+ENV HOME=/home/${USERNAME} \
+    APP_HOME=/home/${USERNAME}/app
+RUN mkdir ${APP_HOME}
+WORKDIR ${APP_HOME}
 
 # install dependencies
 RUN apt-get update && \
@@ -56,17 +57,17 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir /wheels/*
 
 # copy project
-COPY . $APP_HOME
+COPY . ${APP_HOME}
 
 # chown all the files to the app user
-RUN chown -R app:app $APP_HOME
+RUN chown -R ${USERNAME}:${USERNAME} ${APP_HOME}
 
 # Explicit Gunicorn settings
 ENV GUNICORN_CMD_ARGS="--reload --workers=2 --access-logfile=- --access-logformat='%(l)s %(t)s \"%(r)s\" %(s)s %(b)s \"%(f)s\" \"%(a)s\" %(D)s'"
 # ENV GUNICORN_CMD_ARGS="--workers=3 --access-logfile=-"
 
 # change to the app user
-USER app
+USER ${USERNAME}
 
 EXPOSE 8000
 
