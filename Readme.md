@@ -1,4 +1,4 @@
-# Create a test Flask 2.0 - Gunicorn app
+# Flask 2.0 + Gunicorn Boilerplate app
 
 This Flask 2.0 app has the following features:
 
@@ -7,6 +7,8 @@ This Flask 2.0 app has the following features:
 - has curl, netcat, ps and vi (vim-tiny) commands installed
 - runs as the non root user "web"
 - uses multistage build
+- uses Python 3.10 Debian Bullseye Slim image (less than 150 MB)
+- can be deployed to Kubernetes (with or without nginx ingress)
 
 Reference for Flask and Gunicorn ENV variables:
 
@@ -31,7 +33,7 @@ docker image build -t flask-gunicorn:v1 .
 docker run -d -p 8000:8000 flask-gunicorn:v1
 
 #
-docker exec -it <container_id> /bin/sh
+docker exec -it <container_id> /bin/bash
 ```
 
 Deploy to Minikube / Kubernetes
