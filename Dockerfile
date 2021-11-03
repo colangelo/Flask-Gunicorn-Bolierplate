@@ -47,7 +47,7 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends procps netcat curl && \
+    apt-get install -y --no-install-recommends procps netcat curl vim-tiny && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/src/app/wheels /wheels
@@ -60,6 +60,10 @@ COPY . $APP_HOME
 
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
+
+# Explicit Gunicorn settings
+ENV GUNICORN_CMD_ARGS="--reload --workers=2 --access-logfile=- --access-logformat='%(l)s %(t)s \"%(r)s\" %(s)s %(b)s \"%(f)s\" \"%(a)s\" %(D)s'"
+# ENV GUNICORN_CMD_ARGS="--workers=3 --access-logfile=-"
 
 # change to the app user
 USER app
